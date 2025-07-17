@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+   <div class="container">
+    <h1>Analysis Results</h1>
+    <p>Here are the results of your churn analysis:</p>
+    {{ stats_html|safe }}
+    <div>
+        {% for image in images %}
+        <img src="{{ url_for('static', filename=image) }}" alt="Analysis Plot">
+        {% endfor %}
+    </div>
+    <a href="/">Go back to home</a>
+    </div>
+</body>
+</html>
