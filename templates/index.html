@@ -1,1 +1,190 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Churn Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        p {
+            text-align: center;
+            font-size: 1em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .file-input {
+            margin-right: 10px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            overflow-y: auto;
+            max-height: 400px;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        table th, table td {
+            padding: 8px 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+            max-width: 120px; /* Reduced width for tighter columns */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .scrollable {
+            max-height: 200px;
+            overflow-y: scroll;
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        input[type="text"] {
+            padding: 5px;
+            margin-right: 10px;
+            width: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Your X_test.csv File</h1>
+        <p>Please upload a CSV file with the following features and data types:</p>
+        <p>{'Surname':'string', 'CreditScore':'int64', 'Geography':'string', 'Gender':'string', 'Age':'int64', 'Tenure':'int64'}</p>
+        <p>{'Balance':'float64', 'NumOfProducts':'int64', 'HasCrCard':'int64', 'IsActiveMember':'int64', 'EstimatedSalary':'float64'}</p>
+
+        <div class="center">
+            <form method="post" enctype="multipart/form-data">
+                <input type="file" name="file" class="file-input">
+                <input type="submit" value="Upload File">
+            </form>
+            {% if message %}
+            <p style="color: red;">{{ message }}</p>
+            {% endif %}
+        </div>
+
+        <h2>Uploaded File Data</h2>
+        <div class="table-container scrollable">
+            {{ file_data|safe }}
+        </div>
+
+        <h2>High Churn List</h2>
+        <div class="table-container scrollable high-churn-list">
+            {{ high_churn_list|safe }}
+`       </div>
+
+      <div class="center">
+        <form method="post" action="/high_churn_list">
+            <label for="probability">Enter your preferred probability threshold:</label>
+            <input type="text" id="probability" name="probability" value="0.7">
+            <input type="submit" value="Get High Churn List" style="margin-right: 10px;">
+        </form>
+        <form method="get" action="/">
+            <input type="submit" value="Reset Form" style="margin-right: 10px;" />
+        </form>
+        <form method="post" action="/analyse_churn" target="_blank">
+            <input type="submit" value="Analyse High Churn List" />
+        </form>
+        <form method="post" action="/shap_analysis" target="_blank" style="display: inline;">
+            <input type="submit" value="SHAP Analysis" style="margin-left: 10px;">
+        </form>
+      </div>
+    </div>
+
+    <script>
+    window.onload = function() {
+
+        const table = document.querySelector('.high-churn-list .data');
+        if (table) {
+
+            const headerRow = table.tHead.rows[0];
+            const headerCell = document.createElement("th");
+            headerCell.innerHTML = "Sr No";
+            headerRow.insertBefore(headerCell, headerRow.cells[0]);
+
+
+            const bodyRows = table.tBodies[0].rows;
+            for (let i = 0; i < bodyRows.length; i++) {
+                const cell = bodyRows[i].insertCell(0);
+                cell.innerHTML = i + 1; // Numbering starts at 1
+            }
+        }
+};
+</script>
+
+<a href="/shap_analysis">Go to SHAP Analysis</a>
+</body>
+
+</html>
