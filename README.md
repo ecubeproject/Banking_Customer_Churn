@@ -17,6 +17,11 @@ This project identifies customers who are likely to leave a bank and helps targe
 ---
 
 ## 📂 Project Structure
+
+Below is the overall directory layout of the project:
+
+![Project Directory Structure](./Bank_Cust_Churn_Dir_Structure.png)
+
 ---
 
 ## 🚀 How to Run Locally
