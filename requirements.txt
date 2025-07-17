@@ -1,1 +1,10 @@
-
+flask
+pandas
+scikit-learn
+xgboost
+shap
+joblib
+plotly
+numpy
+gunicorn          # For production WSGI server (optional)
+jinja2            # Already included with Flask, explicitly listed if customizing templates
