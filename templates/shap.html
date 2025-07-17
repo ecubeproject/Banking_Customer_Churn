@@ -1,0 +1,129 @@
+DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHAP Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        #shap-result-container {
+            margin: 0;
+            padding: 0;
+        }
+        #shap-result-container iframe {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+        }
+        #shap-result-container > div {
+            margin: 10px 0;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        p {
+            text-align: center;
+            font-size: 1em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .file-input {
+            margin-right: 10px;
+            padding: 10px 20px; /* Adjust padding to match the height of Upload File button */
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .table-container {
+            overflow-x: auto;
+            overflow-y: auto;
+            max-height: 400px;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        table th, table td {
+            padding: 8px 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Your Churn_Modelling.csv File</h1>
+        <p>Please upload a CSV file with 10000 rows and  following features and data types:</p>
+        <p>{'RowNumber':'int64','CustomerId':'int64','Surname':'string', 'CreditScore':'int64', 'Geography':'string', 'Gender':'string', 'Age':'int64', 'Tenure':'int64'}</p>
+        <p>{'Balance':'float64', 'NumOfProducts':'int64', 'HasCrCard':'int64', 'IsActiveMember':'int64', 'EstimatedSalary':'float64','Exited':'int64'}</p>
+        <div class="center">
+            <form id="shap-form" method="post" enctype="multipart/form-data">
+                <input type="file" id="data_file" name="file" class="file-input">
+                <input type="submit" id = "upload-file-button" value="Upload File" class="file-input">
+            </form>
+        </div>
+        <h2>Uploaded File Data</h2>
+        <div id="file-content" class="table-container scrollable">
+            {{ file_data|safe }}
+        </div>
+        <input type="text" id="customer_id" name="customer_id" placeholder="Enter Customer ID">
+        <input type="button" id="shap-analysis-button" value="Do SHAP Analysis" class="file-input" style="background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">
+       <div id="shap-result-container">
+           <h1>How to interpret SHAP plot?</h1>
+           <p>Blue features are pushing the prediction of model towards '0' (not churned). Red features are pushing the prediction towards 1 (churned)</p>
+           <p>The length of bar (blue or red color) for a feature shows how strongly it affects the prediction</p>
+        </div>
+
+    </div>
+    <script src="{{ url_for('static', filename='scripts/shap_interaction.js') }}"></script>
+    <a href="/">Go to Home Page</a>
+</body>
+</html>
